@@ -2,13 +2,18 @@ package main;
 
 import java.util.ArrayList;
 
+import nodes.ASTNode;
+import nodes.ASTNodeFactory;
+
 public class AST {
 	private ArrayList<String> rawData;
 	private ASTNode root;
+	private ASTNodeFactory factory;
 
 	public AST(ArrayList<String> data) {
 		this.rawData = data;
-		this.root = new ASTNode(data.get(0));
+		this.factory = new ASTNodeFactory();
+		this.root = this.factory.makeNode(data.get(0), data.get(0));
 		this.root.setParent(this.root);
 		this.makeAST();
 	}
@@ -19,7 +24,8 @@ public class AST {
 		for (int counter = 1; counter < this.rawData.size(); counter++) {
 
 			int nDots = this.getDots(this.rawData.get(counter));
-			ASTNode currentNode = new ASTNode(this.rawData.get(counter));
+			ASTNode currentNode = this.factory.makeNode(
+					this.rawData.get(counter), this.removeDots(this.rawData.get(counter)));
 
 			if (nDots == prevDots) {
 				prevNode.getParent().addChild(currentNode);
@@ -53,6 +59,13 @@ public class AST {
 		}
 		return n;
 	}
+	
+	private String removeDots(String s) {
+		int nDots = this.getDots(s);
+		return s.substring(nDots);
+	}
+	
+	
 	
 	public void printAST() {
 		this.root.printSubtree();

@@ -1,20 +1,23 @@
-package main;
+package nodes;
 
 import java.util.ArrayList;
 
 public class ASTNode {
 	private String content;
-	private ASTNode parent;
-	private ArrayList<ASTNode> children;
+	protected NodeType type;
+	protected ASTNode parent;
+	protected ArrayList<ASTNode> children;
+
 	
 	public ASTNode(String contentData) {
 		this.content = contentData;
 		this.children = new ArrayList<>();
+		this.type = null;
 	}
 	
 
 	public void printSubtree() {
-		System.out.println(this.content);
+		System.out.println(this.type);
 		for (ASTNode child : this.children) {
 			child.printSubtree();
 	         		
@@ -31,5 +34,9 @@ public class ASTNode {
 	
 	public void addChild(ASTNode c) {
 		this.children.add(c);
+	}
+	
+	public NodeType getType() {
+		return this.type;
 	}
 }
