@@ -7,5 +7,11 @@ public class TauNode extends ASTNode {
 		this.type = NodeType.tau;
 		// TODO Auto-generated constructor stub
 	}
+	
+	public TauNode() {
+		super();
+		this.type = NodeType.tau;
+		// TODO Auto-generated constructor stub
+	}
 
 }

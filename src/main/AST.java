@@ -14,7 +14,8 @@ public class AST {
 		this.rawData = data;
 		this.factory = new ASTNodeFactory();
 		this.root = this.factory.makeNode(data.get(0), data.get(0));
-		this.root.setParent(this.root);
+//		this.root.setParent(this.root);
+		this.root.setDepth(0);
 		this.makeAST();
 	}
 
@@ -29,10 +30,10 @@ public class AST {
 
 			if (nDots == prevDots) {
 				prevNode.getParent().addChild(currentNode);
-				currentNode.setParent(prevNode.getParent());
+//				currentNode.setParent(prevNode.getParent());
 			} else if (nDots == prevDots + 1) {
 				prevNode.addChild(currentNode);
-				currentNode.setParent(prevNode);
+//				currentNode.setParent(prevNode);
 			} else {
 				int diff = prevDots - nDots;
 				ASTNode properParent = prevNode.getParent();
@@ -40,7 +41,7 @@ public class AST {
 					properParent = properParent.getParent();
 				}
 				properParent.addChild(currentNode);
-				currentNode.setParent(properParent);
+//				currentNode.setParent(properParent);
 			}
 			prevDots = nDots;
 			prevNode = currentNode;
@@ -63,6 +64,14 @@ public class AST {
 	private String removeDots(String s) {
 		int nDots = this.getDots(s);
 		return s.substring(nDots);
+	}
+	
+	public void standardize() throws Exception {
+		this.root.standardize();
+	}
+	
+	public void updateDepth() {
+		this.root.updateDepth();
 	}
 	
 	
