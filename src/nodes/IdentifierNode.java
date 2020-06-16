@@ -19,5 +19,9 @@ public class IdentifierNode extends ASTNode {
 	         		
 	      }
 	}
+	
+	public String getName() {
+		return this.name;
+	}
 
 }

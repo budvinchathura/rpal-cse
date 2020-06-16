@@ -19,5 +19,9 @@ public class IntegerNode extends ASTNode {
 	         		
 	      }
 	}
+	
+	public int getValue() {
+		return this.value;
+	}
 
 }

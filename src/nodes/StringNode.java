@@ -19,5 +19,9 @@ public class StringNode extends ASTNode {
 	         		
 	      }
 	}
+	
+	public String getValue() {
+		return this.value;
+	}
 
 }

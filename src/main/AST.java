@@ -79,5 +79,9 @@ public class AST {
 	public void printAST() {
 		this.root.printSubtree();
 	}
+	
+	public ASTNode getRoot() {
+		return this.root;
+	}
 
 }

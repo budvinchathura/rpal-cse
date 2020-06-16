@@ -39,6 +39,8 @@ public enum NodeType {
 	comma,
 	empty_params,
 	y_star,
+	lambda_expression,
+	beta_operator,
 	
 	
 	

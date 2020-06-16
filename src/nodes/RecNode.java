@@ -31,7 +31,7 @@ public class RecNode extends ASTNode {
 		
 		this.children.clear();
 		this.addChild(x);
-		this.addChild(e);
+		this.addChild(gammaNode);
 		
 	}
 }

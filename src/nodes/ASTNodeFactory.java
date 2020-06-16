@@ -112,9 +112,16 @@ public class ASTNodeFactory {
 	    		  return new IntegerNode(rawInput,type.substring(5,type.length()-1));
 	    	  }
 	      }
-	      if(type.length()>6) {
+	      if(type.length()>=8) {
 	    	  if(type.substring(0, 5).equals("<STR:")) {
-	    		  return new StringNode(rawInput,type.substring(5,type.length()-1));
+	    		  String stringValue = type.substring(5,type.length()-1);
+	    		  if (stringValue == "''") {
+					stringValue = "";
+				} else {
+					stringValue = type.substring(6,type.length()-2);
+				}
+	    		  
+	    		  return new StringNode(rawInput,stringValue);
 	    	  }
 	      }
 	      

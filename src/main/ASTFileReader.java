@@ -20,7 +20,7 @@ public class ASTFileReader {
             Scanner sc = new Scanner(fis); // file to be scanned
             // returns true if there is another line to read
             while (sc.hasNextLine()) {
-                this.content.add(sc.nextLine());
+                this.content.add(sc.nextLine().trim());
             }
             sc.close(); // closes the scanner
         } catch (IOException e) {
