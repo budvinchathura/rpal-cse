@@ -30,5 +30,13 @@ public class Environment {
 		}
 	}
 	
+	public int getId() {
+		return this.id;
+	}
+	
+	public Environment getParent() {
+		return this.parent;
+	}
+	
 
 }

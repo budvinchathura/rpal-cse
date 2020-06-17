@@ -16,5 +16,17 @@ public class Stack {
 	public ArrayList<ControlOperator> getStack(){
 		return this.stack;
 	}
+	
+	public int getLength() {
+		return this.stack.size();
+	}
+	
+	public ControlOperator peek() {
+		return this.stack.get(0);
+	}
+	
+	public ControlOperator pop() {
+		return this.stack.remove(0);
+	}
 
 }

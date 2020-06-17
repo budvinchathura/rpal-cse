@@ -30,5 +30,9 @@ public class LambdaExpression extends ControlOperator{
 	public void setEnvId(int id) {
 		this.envId = id;
 	}
+	
+	public ArrayList<String> getVariables(){
+		return this.boundedVariables;
+	}
 
 }

@@ -32,5 +32,10 @@ public class Control {
 	public ArrayList<ControlOperator> getStack(){
 		return this.stack;
 	}
+	
+	public int getLength() {
+		return this.stack.size();
+	}
+
 
 }

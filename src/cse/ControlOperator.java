@@ -40,8 +40,26 @@ public class ControlOperator {
 		this.stringValue = null;
 	}
 	
+	public ControlOperator(NodeType type,String value) {
+		this.type = type;
+		if (type == NodeType.string) {
+			this.stringValue = value;
+		}else if (type == NodeType.identifier) {
+			this.name = value;
+		}		
+	}
+	
+	public ControlOperator(NodeType type,int value) {
+		this.type = type;
+		this.integerValue = value;
+	}
+	
 	public String getName() {
 		return this.name;
+	}
+	
+	public NodeType getType() {
+		return this.type;
 	}
 	
 	public String getStringValue() {

@@ -41,6 +41,7 @@ public enum NodeType {
 	y_star,
 	lambda_expression,
 	beta_operator,
+	env_operator,
 	
 	
 	

@@ -1,6 +1,7 @@
 package cse;
 
 import nodes.ASTNode;
+import nodes.NodeType;
 
 public class EnvironmentOperator extends ControlOperator {
 	private int id;
@@ -11,6 +12,7 @@ public class EnvironmentOperator extends ControlOperator {
 	}
 
 	public EnvironmentOperator(int id) {
+		this.type = NodeType.env_operator;
 		this.id = id;
 		// TODO Auto-generated constructor stub
 	}

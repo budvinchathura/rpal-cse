@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import cse.ControlStrcutureStore;
 import cse.ControlStructure;
+import cse.Executer;
 
 public class Rpal {
 
@@ -25,6 +26,13 @@ public class Rpal {
         ControlStrcutureStore store = new ControlStrcutureStore();
         try {
 			ControlStructure rootCS = new ControlStructure(ast.getRoot(), store);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        Executer executer = new Executer(store);
+        try {
+			executer.execute();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
