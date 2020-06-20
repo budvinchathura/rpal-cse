@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+
 import nodes.ASTNode;
 import nodes.NodeType;
 
@@ -79,6 +80,10 @@ public class Executer {
 			
 			if (lambdaExp.getVariables().size()>1) {
 				// TODO: check for tuple operator
+				if (stack.peek().getType()!=NodeType.tuple) {
+					throw new Exception("could not find a tuple to bind several variables");
+				}
+				
 				ArrayList<ControlOperator> variableValues = ((TupleOperator)stack.pop()).getTuple();
 				ArrayList<String> variableNames = lambdaExp.getVariables();
 				for (int i = 0; i < variableNames.size(); i++) {
@@ -331,6 +336,25 @@ public class Executer {
 			control.loadCS(csStore.getControlStructure(betaOp.getCSid(truthValue)));
 			return;
 			
+		}
+		
+		if (control.peek().getType()==NodeType.gamma
+				&& stack.getStack().get(0).getType()==NodeType.y_star
+				&& stack.getStack().get(1).getType()==NodeType.lambda_expression) {
+			control.pop();
+			stack.pop();
+			EtaExpression etaExpression = new EtaExpression((LambdaExpression) stack.pop());
+			stack.add(etaExpression);
+			return;
+		}
+		
+		if (control.peek().getType()==NodeType.gamma
+				&& stack.peek().getType()==NodeType.eta_expression) {
+			control.add(new ControlOperator(NodeType.gamma));
+			EtaExpression etaExpression = (EtaExpression) stack.peek();
+			stack.add(etaExpression.getLambdaExpression());
+			
+			return;
 		}
 		
 		

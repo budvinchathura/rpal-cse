@@ -12,7 +12,7 @@ public class RecNode extends ASTNode {
 	public void standardize() throws Exception {
 		super.standardize();
 		if(this.children.get(0).getType() != NodeType.equal) {
-			throw new Exception("Rec node should have = node as child");
+			throw new Exception("Rec node should have = node as the child");
 		}
 		this.type = NodeType.equal;
 				
@@ -21,7 +21,7 @@ public class RecNode extends ASTNode {
 		ASTNode e = this.children.get(0).getChildren().get(1);
 		ASTNode lambdaNode = new LambdaNode();
 		ASTNode gammaNode = new GammaNode();
-		ASTNode yStarNode = new YStarNode();
+		ASTNode yStarNode = new ASTNode(NodeType.y_star);
 		
 		gammaNode.addChild(yStarNode);
 		gammaNode.addChild(lambdaNode);

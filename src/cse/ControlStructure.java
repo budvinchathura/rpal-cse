@@ -70,6 +70,8 @@ public class ControlStructure{
 				}
 			}
 			operationsSequence.add(new LambdaExpression(store.getCurrentId()+1, nodes));
+		}else if (leftChild.getType() == NodeType.empty_params) {
+			operationsSequence.add(new LambdaExpression(store.getCurrentId()+1, new ArrayList<IdentifierNode>()));
 		}else {
 			throw new Exception("Left child of lambda should be , or identifier");
 		}

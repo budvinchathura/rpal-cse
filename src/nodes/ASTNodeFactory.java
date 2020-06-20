@@ -99,7 +99,7 @@ public class ASTNodeFactory {
 	      if(type.equals("=")){
 			     return new ASTNode(rawInput,NodeType.equal);	     
 		  }
-	      if(type.equals("()")){
+	      if(type.equals("<()>")){
 			     return new ASTNode(rawInput, NodeType.empty_params);	     
 		  }
 	      if(type.equals(",")){
