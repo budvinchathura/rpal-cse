@@ -5,10 +5,10 @@ import java.util.HashMap;
 public class Environment {
 	private Environment parent;
 	private HashMap<String, ControlOperator> variables;
-	private int id;;
+	private int id;
 
-	public Environment(Environment p, int id) {
-		this.parent = p;
+	public Environment(Environment parent, int id) {
+		this.parent = parent;
 		this.id = id;
 		variables = new HashMap<>();
 		// TODO Auto-generated constructor stub

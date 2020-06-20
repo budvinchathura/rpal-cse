@@ -17,7 +17,7 @@ public class AndNode extends ASTNode {
 				
 		
 
-		ASTNode commaNode = new CommaNode();
+		ASTNode commaNode = new ASTNode(NodeType.comma);
 		ASTNode tauNode = new TauNode();
 		for (int i = 0; i < this.children.size(); i++) {
 			if(this.children.get(i).getType()!=NodeType.equal) {

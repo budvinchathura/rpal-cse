@@ -17,11 +17,27 @@ public class ASTNode {
 		this.standard = false;
 		this.depth = 0;
 	}
+	
+	public ASTNode(String rawString, NodeType type) {
+		this.rawString = rawString;
+		this.children = new ArrayList<>();
+		this.type = type;
+		this.standard = false;
+		this.depth = 0;
+	}
 
 	public ASTNode() {
 		this.rawString = "derived node";
 		this.children = new ArrayList<>();
 		this.type = null;
+		this.standard = false;
+		this.depth = 0;
+	}
+	
+	public ASTNode(NodeType type) {
+		this.rawString = "derived node";
+		this.children = new ArrayList<>();
+		this.type = type;
 		this.standard = false;
 		this.depth = 0;
 	}

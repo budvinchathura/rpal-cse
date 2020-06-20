@@ -19,52 +19,55 @@ public class ASTNodeFactory {
 			     return new TauNode(rawInput);	     
 		  }
 	      if(type.equals("aug")){
-			     return new AugNode(rawInput);	     
+			     return new ASTNode(rawInput,NodeType.aug);	     
 		  }
 	      if(type.equals("->")){
-			     return new ConditionNode(rawInput);	     
+			     return new ASTNode(rawInput,NodeType.cond);	     
 		  }
 	      if(type.equals("or")){
-			     return new OpOrNode(rawInput);	     
+			     return new ASTNode(rawInput,NodeType.op_or);	     
 		  }
 	      if(type.equals("&")){
-			     return new OpAndNode(rawInput);	     
+			     return new ASTNode(rawInput, NodeType.op_and);	     
 		  }
 	      if(type.equals("not")){
-			     return new OpNotNode(rawInput);	     
+			     return new ASTNode(rawInput,NodeType.op_not);	     
 		  }
 	      if(type.equals("gr")){
-			     return new OpGrNode(rawInput);	     
+			     return new ASTNode(rawInput,NodeType.op_gr);	     
 		  }
 	      if(type.equals("ge")){
-			     return new OpGeNode(rawInput);	     
+			     return new ASTNode(rawInput,NodeType.op_ge);	     
 		  }
 	      if(type.equals("ls")){
-			     return new OpLsNode(rawInput);	     
+			     return new ASTNode(rawInput,NodeType.op_ls);	     
 		  }
 	      if(type.equals("le")){
-			     return new OpLeNode(rawInput);	     
+			     return new ASTNode(rawInput,NodeType.op_le);	     
 		  }
 	      if(type.equals("eq")){
-			     return new OpEqNode(rawInput);	     
+			     return new ASTNode(rawInput,NodeType.op_eq);	     
 		  }
 	      if(type.equals("ne")){
-			     return new OpNeNode(rawInput);	     
+			     return new ASTNode(rawInput,NodeType.op_ne);	     
 		  }
 	      if(type.equals("+")){
-			     return new OpPlusNode(rawInput);	     
+			     return new ASTNode(rawInput,NodeType.op_plus);	     
 		  }
 	      if(type.equals("-")){
-			     return new OpMinusNode(rawInput);	     
+			     return new ASTNode(rawInput,NodeType.op_minus);	     
 		  }
 	      if(type.equals("neg")){
-			     return new OpNegNode(rawInput);	     
+			     return new ASTNode(rawInput,NodeType.op_neg);	     
 		  }
 	      if(type.equals("*")){
-			     return new OpMulNode(rawInput);	     
+			     return new ASTNode(rawInput,NodeType.op_mul);	     
+		  }
+	      if(type.equals("**")){
+			     return new ASTNode(rawInput,NodeType.op_pow);	     
 		  }
 	      if(type.equals("/")){
-			     return new OpDivNode(rawInput);	     
+			     return new ASTNode(rawInput,NodeType.op_div);	     
 		  }
 	      if(type.equals("@")){
 			     return new AtNode(rawInput);	     
@@ -72,17 +75,17 @@ public class ASTNodeFactory {
 	      if(type.equals("gamma")){
 			     return new GammaNode(rawInput);	     
 		  }
-	      if(type.equals("true")){
-			     return new TrueNode(rawInput);	     
+	      if(type.equals("<true>")){
+			     return new ASTNode(rawInput, NodeType.true_value);	     
 		  }
-	      if(type.equals("false")){
-			     return new FalseNode(rawInput);	     
+	      if(type.equals("<false>")){
+			     return new ASTNode(rawInput,NodeType.false_value);	     
 		  }
-	      if(type.equals("nil")){
-			     return new NilNode(rawInput);	     
+	      if(type.equals("<nil>")){
+			     return new ASTNode(rawInput,NodeType.nil);	     
 		  }
 	      if(type.equals("dummy")){
-			     return new DummyNode(rawInput);	     
+			     return new ASTNode(rawInput,NodeType.dummy);	     
 		  }
 	      if(type.equals("within")){
 			     return new WithinNode(rawInput);	     
@@ -94,13 +97,13 @@ public class ASTNodeFactory {
 			     return new RecNode(rawInput);	     
 		  }
 	      if(type.equals("=")){
-			     return new EqualNode(rawInput);	     
+			     return new ASTNode(rawInput,NodeType.equal);	     
 		  }
 	      if(type.equals("()")){
-			     return new EmptyParamsNode(rawInput);	     
+			     return new ASTNode(rawInput, NodeType.empty_params);	     
 		  }
 	      if(type.equals(",")){
-			     return new CommaNode(rawInput);	     
+			     return new ASTNode(rawInput,NodeType.comma);	     
 		  }
 	      if(type.length()>5) {
 	    	  if(type.substring(0, 4).equals("<ID:")) {

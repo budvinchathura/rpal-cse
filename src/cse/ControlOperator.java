@@ -11,6 +11,7 @@ public class ControlOperator {
 	private String name;
 	private String stringValue;
 	private int integerValue;
+	private Boolean booleanValue;
 	public ControlOperator(ASTNode node) {
 		switch (node.getType()) {
 		case identifier:
@@ -26,6 +27,16 @@ public class ControlOperator {
 		case string:
 			this.type = NodeType.string;
 			this.stringValue = ((StringNode) node).getValue();
+			break;
+			
+		case true_value:
+			this.type = NodeType.true_value;
+			this.booleanValue = true;
+			break;
+		
+		case false_value:
+			this.type = NodeType.false_value;
+			this.booleanValue = false;
 			break;
 
 		default:
@@ -54,6 +65,25 @@ public class ControlOperator {
 		this.integerValue = value;
 	}
 	
+	public ControlOperator(NodeType type) {
+		this.type = type;
+		switch (type) {
+		case true_value:
+			this.type = NodeType.true_value;
+			this.booleanValue = true;
+			break;
+		
+		case false_value:
+			this.type = NodeType.false_value;
+			this.booleanValue = false;
+			break;
+
+		default:
+			break;
+		}
+	}
+	
+	
 	public String getName() {
 		return this.name;
 	}
@@ -68,5 +98,9 @@ public class ControlOperator {
 	
 	public int getIntegerValue() {
 		return this.integerValue;
+	}
+	
+	public Boolean getBooleanValue() {
+		return this.booleanValue;
 	}
 }

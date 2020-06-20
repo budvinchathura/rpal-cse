@@ -42,6 +42,7 @@ public enum NodeType {
 	lambda_expression,
 	beta_operator,
 	env_operator,
+	tuple,
 	
 	
 	
