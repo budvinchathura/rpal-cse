@@ -17,7 +17,7 @@ public class Executer {
 	private EnvStore envStore;
 	private ArrayList<Integer> envStack;
 	// TODO: check for other built-in functions
-	private String[] _builtInFunctions = new String[]{"Print"};
+	private String[] _builtInFunctions = new String[]{"Print", "Order","Conc","Stem","Stern","Null","Isinteger", "Istruthvalue", "Isstring", "Istuple", "Isfunction", "Isdummy","ItoS"};
 	private List<String> builtInFunctions = Arrays.asList(_builtInFunctions);
 
 	public Executer(ControlStrcutureStore csStore) {
@@ -107,10 +107,71 @@ public class Executer {
 			switch (identifier.getName()) {
 			case "Print":
 				System.out.println(this.getPrintableString(op));
-				// TODO: check for tuple type
 				stack.add(new ControlOperator(new ASTNode(NodeType.dummy)));
 				break;
-
+			case "Order":
+				stack.add(new ControlOperator(NodeType.integer,((TupleOperator)op).getSize()));
+				break;
+			
+			case "Conc":
+				// Conc has 2 gamma nodes
+				// remove the second gamma
+				control.pop();
+				ControlOperator op2 = stack.pop();
+				stack.add(new ControlOperator(NodeType.string,op.getStringValue()+op2.getStringValue()));
+				break;
+			
+			case "Stem":
+				String string1 = op.getStringValue();
+				if (string1.isEmpty()) {
+					stack.add(new ControlOperator(NodeType.string,""));
+				}else {
+					stack.add(new ControlOperator(NodeType.string,string1.substring(0, 1)));
+				}
+				break;
+			
+			case "Stern":
+				String string2 = op.getStringValue();
+				if (string2.isEmpty() || string2.length()==1) {
+					stack.add(new ControlOperator(NodeType.string,""));
+				}else {
+					stack.add(new ControlOperator(NodeType.string,string2.substring(1)));
+				}
+				break;
+			
+			case "Null":
+				stack.add(this.makeBooleanOp(op.getType()==NodeType.nil));
+				break;
+				
+			case "Isinteger":
+				stack.add(this.makeBooleanOp(op.getType()==NodeType.integer));
+				break;
+				
+			case "Isstring":
+				stack.add(this.makeBooleanOp(op.getType()==NodeType.string));
+				break;
+				
+			case "Istruthvalue":
+				stack.add(this.makeBooleanOp(
+						op.getType()==NodeType.true_value ||  op.getType()==NodeType.false_value));
+				break;
+				
+			case "Isfunction":
+				stack.add(this.makeBooleanOp(op.getType()==NodeType.lambda_expression));
+				break;
+				
+			case "Istuple":
+				stack.add(this.makeBooleanOp(op.getType()==NodeType.tuple));
+				break;
+				
+			case "Isdummy":
+				stack.add(this.makeBooleanOp(op.getType()==NodeType.dummy));
+				break;
+				
+			case "ItoS":
+				stack.add(new ControlOperator(NodeType.string,Integer.toString(op.getIntegerValue())));
+				break;
+				
 			default:
 				break;
 			}
@@ -317,6 +378,7 @@ public class Executer {
 				throw new Exception("unsupported operands for "+operation);
 			}
 			stack.add(this.makeBooleanOp(resultValue));
+			return;
 			
 		}
 		

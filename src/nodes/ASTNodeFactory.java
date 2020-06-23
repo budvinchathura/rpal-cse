@@ -118,7 +118,7 @@ public class ASTNodeFactory {
 	      if(type.length()>=8) {
 	    	  if(type.substring(0, 5).equals("<STR:")) {
 	    		  String stringValue = type.substring(5,type.length()-1);
-	    		  if (stringValue == "''") {
+	    		  if (stringValue.equals("''")) {
 					stringValue = "";
 				} else {
 					stringValue = type.substring(6,type.length()-2);
