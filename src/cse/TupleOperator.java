@@ -22,5 +22,9 @@ public class TupleOperator extends ControlOperator {
 		return this.tuple;
 	}
 	
+	public int getSize() {
+		return this.tuple.size();
+	}
+	
 
 }

@@ -3,7 +3,7 @@ package cse;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
+import java.util.StringJoiner;
 
 import nodes.ASTNode;
 import nodes.NodeType;
@@ -103,19 +103,10 @@ public class Executer {
 				stack.peek().getType() == NodeType.identifier) {
 			control.pop();
 			ControlOperator identifier = stack.pop();
-			ControlOperator value = stack.pop();
+			ControlOperator op = stack.pop();
 			switch (identifier.getName()) {
 			case "Print":
-				if (value.getType() == NodeType.integer) {
-					System.out.println(value.getIntegerValue());
-				}
-				else if (value.getType() == NodeType.string) {
-					System.out.println(value.getStringValue());
-				}
-				else if (value.getType() == NodeType.true_value
-						||value.getType() == NodeType.false_value) {
-					System.out.println(value.getBooleanValue());
-				}
+				System.out.println(this.getPrintableString(op));
 				// TODO: check for tuple type
 				stack.add(new ControlOperator(new ASTNode(NodeType.dummy)));
 				break;
@@ -388,6 +379,36 @@ public class Executer {
 			return new ControlOperator(NodeType.true_value);
 		}else {
 			return new ControlOperator(NodeType.false_value);
+		}
+	}
+	
+	private String getPrintableString(ControlOperator op) {
+		switch (op.type) {
+		case nil:
+			return "nil";
+		case dummy:
+			return "dummy";
+			
+		case integer:
+			return Integer.toString(op.getIntegerValue());
+			
+		case string:
+			return op.getStringValue();
+			
+		case true_value:
+		case false_value:
+			return Boolean.toString(op.getBooleanValue());
+		case tuple:
+			StringJoiner joinedOutput = new StringJoiner(", ");
+			ArrayList<ControlOperator> items = ((TupleOperator)op).getTuple();
+			for (ControlOperator item : items) {
+				joinedOutput.add(this.getPrintableString(item));
+			}
+			return "("+joinedOutput.toString()+")";
+			
+
+		default:
+			return "";
 		}
 	}
 
