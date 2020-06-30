@@ -2,6 +2,7 @@ package cse;
 
 import java.util.HashMap;
 
+// stores all environments by their id
 public class EnvStore {
 	HashMap<Integer, Environment> envs;
 

@@ -3,6 +3,7 @@ package cse;
 import nodes.ASTNode;
 import nodes.NodeType;
 
+// class for e operator in Control and Stack
 public class EnvironmentOperator extends ControlOperator {
 	private int id;
 

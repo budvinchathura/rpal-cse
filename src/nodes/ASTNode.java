@@ -2,8 +2,9 @@ package nodes;
 
 import java.util.ArrayList;
 
+// super class for AST node
 public class ASTNode {
-	private String rawString;
+	private String rawString; 	// for printing the initial AST
 	protected int depth;
 	protected NodeType type;
 	protected ASTNode parent;
@@ -42,6 +43,7 @@ public class ASTNode {
 		this.depth = 0;
 	}
 
+	// recursively print the tree under the node
 	public void printSubtree() {
 		this.printDepth();
 		System.out.print(this.type);
@@ -96,6 +98,7 @@ public class ASTNode {
 		this.depth = n;
 	}
 	
+	// my depth = depth of parent + 1
 	public void updateDepth() {
 		if (this.depth >0) {
 			this.depth = this.parent.getDepth() + 1;

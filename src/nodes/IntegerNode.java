@@ -7,7 +7,6 @@ public class IntegerNode extends ASTNode {
 		super(contentData);
 		this.type = NodeType.integer;
 		this.value = Integer.parseInt(rawValue);
-		// TODO Auto-generated constructor stub
 	}
 	@Override
 	public void printSubtree() {

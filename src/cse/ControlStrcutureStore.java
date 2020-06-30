@@ -2,6 +2,7 @@ package cse;
 
 import java.util.HashMap;
 
+// class to store all control structure with their ids
 public class ControlStrcutureStore {
 	private int currentId;
 	private HashMap<Integer, ControlStructure> controlStructures;
@@ -9,9 +10,9 @@ public class ControlStrcutureStore {
 	public ControlStrcutureStore() {
 		this.currentId  =-1;
 		this.controlStructures = new HashMap<>();
-		// TODO Auto-generated constructor stub
 	}
 	
+	//id for next control structure
 	public int getNextId() {
 		this.currentId+=1;
 		return this.currentId;
@@ -27,6 +28,7 @@ public class ControlStrcutureStore {
 		return this.currentId;
 	}
 	
+	// get control structure by searching by id
 	public ControlStructure getControlStructure(int id) {
 		return this.controlStructures.get(id);
 	}

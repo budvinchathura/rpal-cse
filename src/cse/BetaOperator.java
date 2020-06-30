@@ -4,16 +4,14 @@ import nodes.ASTNode;
 import nodes.NodeType;
 
 public class BetaOperator extends ControlOperator {
-	private int trueCSid;
-	private int falseCSid;
+	private int trueCSid;	// control structure when condition is true
+	private int falseCSid;	// control structure when condition is false
 
 	public BetaOperator(ASTNode node) {
 		super(node);
-		// TODO Auto-generated constructor stub
 	}
 
 	public BetaOperator(int trueId, int falseId) {
-		// TODO Auto-generated constructor stub
 		super();
 		this.type = NodeType.beta_operator;
 		this.trueCSid = trueId;

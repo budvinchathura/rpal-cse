@@ -1,5 +1,6 @@
 package nodes;
 
+// contains all node types and additional operator types in CSE machine
 public enum NodeType {
 	let,
 	fcn_form,

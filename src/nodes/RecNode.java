@@ -5,7 +5,6 @@ public class RecNode extends ASTNode {
 	public RecNode(String contentData) {
 		super(contentData);
 		this.type = NodeType.rec;
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override

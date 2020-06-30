@@ -10,8 +10,8 @@ public class ControlStructure{
 	private ArrayList<ControlOperator> operationsSequence;
 	private int id;
 
+	// input is a node from AST
 	public ControlStructure(ASTNode rootNode, ControlStrcutureStore store) throws Exception {
-		// TODO Auto-generated constructor stub
 		this.operationsSequence = new ArrayList<>();
 		this.id = store.addControlStructure(this);
 		this.makeSequence(rootNode, store);
@@ -28,16 +28,21 @@ public class ControlStructure{
 		return this.operationsSequence;
 	}
 	
+	// fill the control structure for subtree starting from the given AST node
 	private void makeSequence(ASTNode rootNode, ControlStrcutureStore store) throws Exception {
 		ASTNode currentNode = rootNode;
 		if (currentNode == null) {
 			return;
 		}
+		
+		// if it is a lambda node, create new control structure
 		if (currentNode.getType() == NodeType.lambda) {
 			
 			this.makeLambdaExpression(currentNode, store);
 			new ControlStructure(currentNode.getChildren().get(1),store);
 		}
+		
+		//special cases for -> node and tau node
 		else if(currentNode.getType() == NodeType.cond) {
 			this.makeConditional(currentNode, store);
 		}
@@ -55,12 +60,16 @@ public class ControlStructure{
 	
 	private void makeLambdaExpression(ASTNode currentNode, ControlStrcutureStore store) throws Exception {
 		ASTNode leftChild = currentNode.getChildren().get(0);
+		
+		// single name binding
 		if (leftChild.getType() == NodeType.identifier) {
 			ArrayList<IdentifierNode> nodes = new ArrayList<>();
 			nodes.add((IdentifierNode)leftChild);
 			operationsSequence.add(new LambdaExpression(store.getCurrentId()+1, nodes));
 			
-		}else if (leftChild.getType() == NodeType.comma) {
+		}
+		// if comma node exists, bind multiple names
+		else if (leftChild.getType() == NodeType.comma) {
 			ArrayList<IdentifierNode> nodes = new ArrayList<>();
 			for (ASTNode node : leftChild.getChildren()) {
 				if (node.getType() == NodeType.identifier) {
@@ -70,7 +79,9 @@ public class ControlStructure{
 				}
 			}
 			operationsSequence.add(new LambdaExpression(store.getCurrentId()+1, nodes));
-		}else if (leftChild.getType() == NodeType.empty_params) {
+		}
+		// if () node is at left child, bind nothing
+		else if (leftChild.getType() == NodeType.empty_params) {
 			operationsSequence.add(new LambdaExpression(store.getCurrentId()+1, new ArrayList<IdentifierNode>()));
 		}else {
 			throw new Exception("Left child of lambda should be , or identifier");

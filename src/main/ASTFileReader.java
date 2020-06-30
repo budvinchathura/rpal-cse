@@ -13,7 +13,9 @@ public class ASTFileReader {
         this.fileName = fileName;
         this.content = new ArrayList<String>();
     }
-
+    
+    
+    // read from file, line by line
     private void processFile() {
         try {
             FileInputStream fis = new FileInputStream(this.fileName);

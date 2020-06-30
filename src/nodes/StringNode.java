@@ -6,7 +6,6 @@ public class StringNode extends ASTNode {
 		super(contentData);
 		this.type = NodeType.string;
 		this.value = value;
-		// TODO Auto-generated constructor stub
 	}
 	
 	@Override

@@ -3,6 +3,7 @@ package cse;
 
 import nodes.NodeType;
 
+// operator processing recursion
 public class EtaExpression extends ControlOperator {
 
 	private int id;

@@ -1,13 +1,10 @@
 package nodes;
 
-import java.util.ArrayList;
-
 public class AndNode extends ASTNode {
 
 	public AndNode(String contentData) {
 		super(contentData);
 		this.type = NodeType.and;
-		// TODO Auto-generated constructor stub
 	}
 	
 	@Override

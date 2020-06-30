@@ -6,7 +6,6 @@ public class IdentifierNode extends ASTNode {
 		super(contentData);
 		this.type = NodeType.identifier;
 		this.name = name;
-		// TODO Auto-generated constructor stub
 	}
 	
 	@Override

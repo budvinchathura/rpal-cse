@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import nodes.IdentifierNode;
 import nodes.NodeType;
 
+// class for lambda expression in CSE machine
 public class LambdaExpression extends ControlOperator{
 
 	private int id;

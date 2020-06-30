@@ -2,6 +2,8 @@ package nodes;
 
 public class ASTNodeFactory {
 	public ASTNode makeNode(String rawInput, String type){
+		
+			//check the token string value and create the relevant node
 	
 	      if(type.equals("let")){
 	         return new LetNode(rawInput);	     

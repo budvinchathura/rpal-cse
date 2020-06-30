@@ -28,20 +28,24 @@ public class AST {
 			ASTNode currentNode = this.factory.makeNode(
 					this.rawData.get(counter), this.removeDots(this.rawData.get(counter)));
 
+			// current node is in same level as the previous node
 			if (nDots == prevDots) {
 				prevNode.getParent().addChild(currentNode);
-//				currentNode.setParent(prevNode.getParent());
-			} else if (nDots == prevDots + 1) {
+			} 
+			// current node is a child of previous node
+			else if (nDots == prevDots + 1) {
 				prevNode.addChild(currentNode);
-//				currentNode.setParent(prevNode);
-			} else {
+			} 
+			// current node is in level of the parent of previous node
+			else {
 				int diff = prevDots - nDots;
 				ASTNode properParent = prevNode.getParent();
+				
+				// go up in hierarchy
 				for (int i = 1; i <= diff; i++) {
 					properParent = properParent.getParent();
 				}
 				properParent.addChild(currentNode);
-//				currentNode.setParent(properParent);
 			}
 			prevDots = nDots;
 			prevNode = currentNode;
@@ -49,6 +53,7 @@ public class AST {
 
 	}
 
+	// returns number of preceding dots in a string
 	private int getDots(String s) {
 		int n = 0;
 		for (char ch : s.toCharArray()) {
@@ -66,6 +71,7 @@ public class AST {
 		return s.substring(nDots);
 	}
 	
+	// standardize nodes recursively
 	public void standardize() throws Exception {
 		this.root.standardize();
 	}
@@ -75,7 +81,7 @@ public class AST {
 	}
 	
 	
-	
+	// for debug purpose
 	public void printAST() {
 		this.root.printSubtree();
 	}

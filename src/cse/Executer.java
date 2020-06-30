@@ -8,6 +8,7 @@ import java.util.StringJoiner;
 import nodes.ASTNode;
 import nodes.NodeType;
 
+// Class for applying rules in CSE machine
 public class Executer {
 	private Control control;
 	private Stack stack;
@@ -16,7 +17,6 @@ public class Executer {
 	private Environment currentEnv;
 	private EnvStore envStore;
 	private ArrayList<Integer> envStack;
-	// TODO: check for other built-in functions
 	private String[] _builtInFunctions = new String[]{"Print", "Order","Conc","Stem","Stern","Null","Isinteger", "Istruthvalue", "Isstring", "Istuple", "Isfunction", "Isdummy","ItoS"};
 	private List<String> builtInFunctions = Arrays.asList(_builtInFunctions);
 
@@ -38,6 +38,7 @@ public class Executer {
 	}
 	
 	public void execute() throws Exception {
+		// apply CSE rules iteratively
 		while (this.control.getLength()>0 && this.stack.getLength()>0) {
 			this.process();
 		}
@@ -45,7 +46,8 @@ public class Executer {
 	
 	private void process() throws Exception {
 		
-		// if identifier is on top of control
+		// if identifier is on top of control 
+		// CSE rule 1
 		if (control.peek().getType() == NodeType.identifier) {
 			ControlOperator op = control.pop();
 			ControlOperator value;
@@ -53,33 +55,39 @@ public class Executer {
 			if (! builtInFunctions.contains(op.getName())) {
 				value = currentEnv.search(op.getName());
 			}else {
+				// if the identifier is a built-in function, just add to stack
 				value = op;
 			}
 			stack.add(value);
 			return;
 		}
+		
+		// CSE rule 2
 		if (control.peek().getType() == NodeType.lambda_expression) {
 			LambdaExpression lambdaExp = (LambdaExpression) control.pop();
-			lambdaExp.setEnvId(currentEnv.getId());
+			lambdaExp.setEnvId(currentEnv.getId());		//set current environment to lambda expression
 			stack.add(lambdaExp);
 			return;			
 		}
+		
+		// CSE rule 4
+		// creating a new environment for the lambda expression
 		if (control.peek().getType() == NodeType.gamma &&
 				stack.peek().getType() == NodeType.lambda_expression) {
 			control.pop();
 			LambdaExpression lambdaExp = (LambdaExpression) stack.pop();
 			int expId = lambdaExp.getId();
 			
-			
+			// make a new environment
 			EnvironmentOperator envOp = new EnvironmentOperator(nextEnvId);
 			this.currentEnv = new Environment(this.envStore.getEnv(lambdaExp.getEnvId()), nextEnvId);
 			envStore.addEnv(nextEnvId, currentEnv);
 			this.envStack.add(nextEnvId);
 			this.nextEnvId+=1;
 			
-			
+			// multiple names are bounded in lambda expression
+			// CSE rule 11
 			if (lambdaExp.getVariables().size()>1) {
-				// TODO: check for tuple operator
 				if (stack.peek().getType()!=NodeType.tuple) {
 					throw new Exception("could not find a tuple to bind several variables");
 				}
@@ -96,17 +104,25 @@ public class Executer {
 			
 			control.add(envOp);
 			stack.add(envOp);
+			
+			//add elements from new control structure
 			control.loadCS(csStore.getControlStructure(expId));
 			return;
 		}
+		
+		//CSE rule 3
 		if (control.peek().getType() == NodeType.gamma &&
 				stack.peek().getType() == NodeType.identifier) {
 			control.pop();
 			ControlOperator identifier = stack.pop();
 			ControlOperator op = stack.pop();
+			
+			//built-in functions
 			switch (identifier.getName()) {
 			case "Print":
 				System.out.println(this.getPrintableString(op));
+				
+				//dummy node should be added after printing
 				stack.add(new ControlOperator(new ASTNode(NodeType.dummy)));
 				break;
 			case "Order":
@@ -178,6 +194,7 @@ public class Executer {
 			return;
 		}
 		
+		// CSE rule 9
 		if (control.peek().getType() == NodeType.tau) {
 			TauOperator tau =  (TauOperator) control.pop();
 			ArrayList<ControlOperator> items = new ArrayList<>();
@@ -191,6 +208,7 @@ public class Executer {
 			return;
 		}
 		
+		//CSE rule 10
 		if (control.peek().getType() == NodeType.gamma
 				&& stack.getStack().get(0).getType() == NodeType.tuple) {
 			ControlOperator selector = stack.getStack().get(1);
@@ -204,6 +222,7 @@ public class Executer {
 			return;
 		}
 		
+		// CSE rule 6 for aug operator
 		if (control.peek().getType() == NodeType.aug) {
 			control.pop();
 			ControlOperator op1 = stack.pop();
@@ -217,12 +236,13 @@ public class Executer {
 				newTupleValue.add(op2);
 				stack.add(new TupleOperator(newTupleValue));
 			}else {
+				// can not aug with other data types
 				throw new Exception("First operand for aug must be nil or a tuple");
 			}
 			return;
 		}
 		
-		
+		// CSE rule 6 for +
 		if (control.peek().getType() == NodeType.op_plus) {
 			control.pop();
 			int val1 = stack.pop().getIntegerValue();
@@ -230,7 +250,7 @@ public class Executer {
 			stack.add(new ControlOperator(NodeType.integer, val1+val2));
 			return;
 		}
-		
+		// CSE rule 6 for -
 		if (control.peek().getType() == NodeType.op_minus) {
 			control.pop();
 			int val1 = stack.pop().getIntegerValue();
@@ -238,7 +258,7 @@ public class Executer {
 			stack.add(new ControlOperator(NodeType.integer, val1-val2));
 			return;
 		}
-		
+		// CSE rule 6 for *
 		if (control.peek().getType() == NodeType.op_mul) {
 			control.pop();
 			int val1 = stack.pop().getIntegerValue();
@@ -246,7 +266,7 @@ public class Executer {
 			stack.add(new ControlOperator(NodeType.integer, val1*val2));
 			return;
 		}
-		
+		// CSE rule 6 for /
 		if (control.peek().getType() == NodeType.op_div) {
 			control.pop();
 			int val1 = stack.pop().getIntegerValue();
@@ -254,7 +274,7 @@ public class Executer {
 			stack.add(new ControlOperator(NodeType.integer, val1/val2));
 			return;
 		}
-		
+		// CSE rule 6 for **
 		if (control.peek().getType() == NodeType.op_pow) {
 			control.pop();
 			int val1 = stack.pop().getIntegerValue();
@@ -262,7 +282,7 @@ public class Executer {
 			stack.add(new ControlOperator(NodeType.integer,(int) Math.pow(val1, val2)));
 			return;
 		}
-		
+		// CSE rule 7 for neg
 		if (control.peek().getType() == NodeType.op_neg) {
 			control.pop();
 			int val = stack.pop().getIntegerValue();
@@ -270,6 +290,8 @@ public class Executer {
 			return;
 		}
 		
+		// and,or binops 
+		// not unop
 		if (control.peek().getType() == NodeType.op_or
 				|| control.peek().getType() == NodeType.op_and
 				|| control.peek().getType() == NodeType.op_not) {
@@ -300,7 +322,7 @@ public class Executer {
 			return;
 		}
 		
-		
+		// gr,ge,ls,le,eq,ne binops
 		if (control.peek().getType() == NodeType.op_gr
 				|| control.peek().getType() == NodeType.op_ge
 				|| control.peek().getType() == NodeType.op_ls
@@ -382,6 +404,7 @@ public class Executer {
 			
 		}
 		
+		// CSE rule 8
 		if (control.peek().getType()==NodeType.beta_operator) {
 			BetaOperator betaOp = (BetaOperator) control.pop();
 			Boolean truthValue = stack.pop().getBooleanValue();
@@ -391,6 +414,7 @@ public class Executer {
 			
 		}
 		
+		// CSE rule 12
 		if (control.peek().getType()==NodeType.gamma
 				&& stack.getStack().get(0).getType()==NodeType.y_star
 				&& stack.getStack().get(1).getType()==NodeType.lambda_expression) {
@@ -401,6 +425,7 @@ public class Executer {
 			return;
 		}
 		
+		// CSE rule 13
 		if (control.peek().getType()==NodeType.gamma
 				&& stack.peek().getType()==NodeType.eta_expression) {
 			control.add(new ControlOperator(NodeType.gamma));
@@ -411,7 +436,8 @@ public class Executer {
 		}
 		
 		
-		
+		//CSE rule 5
+		// exit environment
 		if(control.peek().getType() == NodeType.env_operator && 
 				stack.getStack().get(1).getType() == NodeType.env_operator) {
 			EnvironmentOperator env1 = (EnvironmentOperator) control.peek();
@@ -433,6 +459,7 @@ public class Executer {
 			return;
 		}
 		
+		//if nothing matched for boave rules, just execute CSE rule 1
 		stack.add(control.pop());
 	}
 	
@@ -444,6 +471,7 @@ public class Executer {
 		}
 	}
 	
+	// Printing different types
 	private String getPrintableString(ControlOperator op) {
 		switch (op.type) {
 		case nil:
@@ -467,7 +495,15 @@ public class Executer {
 				joinedOutput.add(this.getPrintableString(item));
 			}
 			return "("+joinedOutput.toString()+")";
-			
+
+		case lambda_expression:
+			ArrayList<String> variables =  ((LambdaExpression) op).getVariables();
+			String variable = "";
+			if (variables.size()>0) {
+				variable = variables.get(0);
+			}
+			int id = ((LambdaExpression) op).getId();
+			return "[lambda closure: "+variable+": "+id+"]";
 
 		default:
 			return "";
